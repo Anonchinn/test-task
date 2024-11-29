@@ -1,0 +1,37 @@
+/*เลือกทุกแถวจากตาราง PRODUCT และเรียงข้อมูลตาม FCCODE จากมากไปน้อย*/
+SELECT * 
+FROM PRODUCT
+ORDER BY FCCODE DESC;
+
+
+--------------------------------------------------------------
+/*เชื่อมต่อตาราง COOR และ CORP และเลือกเฉพาะ FCCODE และ FCNAME ของแถวที่มี FCCODE เป็น '8888' และ 'AIC' จากน้อยไปมาก*/
+SELECT 
+    COOR.FCCODE, 
+    COOR.FCNAME,
+    CORP.FCCODE,
+    CORP.FCNAME
+FROM COOR
+JOIN CORP ON COOR.FCCORP = CORP.FCCODE
+WHERE COOR.FCCORP IN ('8888', 'AIC')
+ORDER BY COOR.FCCODE ASC;
+
+--------------------------------------------------------------
+/*เชื่อมต่อตาราง COOR, CORP และ PRODUCT และเลือกข้อมูล FCCODE, FCNAME จาก COOR และ CORP และ FCCODE, FCNAME, FNQTY จาก PRODUCT โดยรวมค่า FNQTY ของแต่ละ PRODUCT และเลือกเฉพาะรหัส '51-01824' และ '9999' จากน้อยไปมาก*/
+SELECT
+    COOR.FCCODE AS COOR_FCCODE,
+    COOR.FCNAME AS COOR_FCNAME,
+    CORP.FCCODE AS CORP_FCCODE, 
+    CORP.FCNAME AS CORP_FCNAME,
+    PRODUCT.FCCODE AS PRODUCT_FCCODE,
+    PRODUCT.FCNAME AS PRODUCT_FCNAME,
+    SUM(PRODUCT.FNQTY) AS TOTAL_FNQTY
+FROM COOR
+JOIN CORP ON COOR.FCCORP = CORP.FCCODE
+JOIN PRODUCT ON COOR.FCCODE = PRODUCT.FCCOOR
+WHERE COOR.FCCORP IN ('51-01824', '9999')
+GROUP BY
+    COOR.FCCODE, COOR.FCNAME, 
+    CORP.FCCODE, CORP.FCNAME,
+    PRODUCT.FCCODE, PRODUCT.FCNAME
+ORDER BY TOTAL_FNQTY ASC;
