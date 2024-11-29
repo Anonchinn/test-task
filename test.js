@@ -1,4 +1,3 @@
-// ฟังก์ชันคำนวณบิลค่าน้ำ
 function calculateWaterBill(units) {
     const baseFee = 50;  // ค่าธรรมเนียมพื้นฐาน
     let total = baseFee; // ค่าเริ่มต้นรวมค่าธรรมเนียม
